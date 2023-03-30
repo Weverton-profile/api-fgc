@@ -33,6 +33,8 @@ public class Fighter {
 	private Game game;
 	@Column @NotNull
 	private String name;
+	@Column @NotNull
+	private String urlImage;
 	@OneToMany(mappedBy = "fighter", fetch = FetchType.LAZY)
 	private List<Guide> guides;
 	

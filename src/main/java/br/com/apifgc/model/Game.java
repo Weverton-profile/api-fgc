@@ -29,6 +29,8 @@ public class Game {
 	private Long id_game;
 	@Column @NotNull @NotEmpty
 	private String name;
+	@Column @NotNull
+	private String urlImage;
 	@OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
 	private List<Fighter> characteres;
 	
