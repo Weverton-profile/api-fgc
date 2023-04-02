@@ -1,9 +1,12 @@
 package br.com.apifgc.controller;
 
 import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.apifgc.model.game.Game;
-import br.com.apifgc.model.game.GameRegistrationData;
-import br.com.apifgc.model.game.GameUpdateData;
+import br.com.apifgc.dto.game.GameRegistrationData;
+import br.com.apifgc.dto.game.GameUpdateData;
+import br.com.apifgc.model.Game;
 import br.com.apifgc.repository.GameRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -31,6 +34,12 @@ public class GameController {
 	public ResponseEntity<GameRegistrationData> detail(@PathVariable Long id) {
 		Game game = gameRepository.getReferenceById(id);
 		return ResponseEntity.ok(new GameRegistrationData(game));
+	}
+	
+	@GetMapping("list")
+	public ResponseEntity<Page<GameRegistrationData>> list(@PageableDefault(size = 10) Pageable pagination) {
+		Page<GameRegistrationData> page = gameRepository.findAll(pagination).map(GameRegistrationData::new);
+		return ResponseEntity.ok(page);
 	}
 	
 	@PostMapping("new")
@@ -49,5 +58,12 @@ public class GameController {
 		Game game = gameRepository.getReferenceById(data.id());
 		game.updateData(data);
 		return ResponseEntity.ok(new GameRegistrationData(game));
+	}
+	
+	@DeleteMapping("delete/{id}")
+	@Transactional
+	public ResponseEntity<Object> delete(@PathVariable Long id) {
+		gameRepository.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 }
