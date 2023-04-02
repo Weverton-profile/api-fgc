@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.apifgc.dto.game.GameData;
+import br.com.apifgc.dto.game.GameRegistrationAllData;
 import br.com.apifgc.dto.game.GameRegistrationData;
 import br.com.apifgc.dto.game.GameUpdateData;
 import br.com.apifgc.model.Game;
@@ -31,14 +33,14 @@ public class GameController {
 	private GameRepository gameRepository;
 	
 	@GetMapping("show/{id}")
-	public ResponseEntity<GameRegistrationData> detail(@PathVariable Long id) {
+	public ResponseEntity<GameRegistrationAllData> detail(@PathVariable Long id) {
 		Game game = gameRepository.getReferenceById(id);
-		return ResponseEntity.ok(new GameRegistrationData(game));
+		return ResponseEntity.ok(new GameRegistrationAllData(game));
 	}
 	
 	@GetMapping("list")
-	public ResponseEntity<Page<GameRegistrationData>> list(@PageableDefault(size = 10) Pageable pagination) {
-		Page<GameRegistrationData> page = gameRepository.findAll(pagination).map(GameRegistrationData::new);
+	public ResponseEntity<Page<GameData>> list(@PageableDefault(size = 10) Pageable pagination) {
+		Page<GameData> page = gameRepository.findAll(pagination).map(GameData::new);
 		return ResponseEntity.ok(page);
 	}
 	

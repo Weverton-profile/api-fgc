@@ -13,5 +13,4 @@ public record GameRegistrationData(
 	public GameRegistrationData(Game game) {
 		this(game.getName(), game.getUrlImage());
 	}
-
 }

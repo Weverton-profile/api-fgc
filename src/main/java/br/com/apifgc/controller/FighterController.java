@@ -1,7 +1,6 @@
 package br.com.apifgc.controller;
 
 import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.apifgc.dto.fighter.FighterRegistrationAllData;
 import br.com.apifgc.dto.fighter.FighterRegistrationData;
 import br.com.apifgc.dto.fighter.FighterUpdateData;
 import br.com.apifgc.model.Fighter;
@@ -36,9 +36,9 @@ public class FighterController {
 	private GameRepository gameRepository;
 	
 	@GetMapping("show/{id}")
-	public ResponseEntity<FighterRegistrationData> detail(@PathVariable Long id) {
+	public ResponseEntity<FighterRegistrationAllData> detail(@PathVariable Long id) {
 		Fighter fighter = fighterRepository.getReferenceById(id);
-		return ResponseEntity.ok(new FighterRegistrationData(fighter));
+		return ResponseEntity.ok(new FighterRegistrationAllData(fighter));
 	}
 	
 	@GetMapping("list")

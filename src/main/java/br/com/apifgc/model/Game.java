@@ -35,7 +35,7 @@ public class Game {
 	@Column @NotNull
 	private String urlImage;
 	@OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
-	private List<Fighter> characteres;
+	private List<Fighter> fighters;
 	
 	public Game(GameRegistrationData data) {
 		this.name = data.name();

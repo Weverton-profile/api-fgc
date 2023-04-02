@@ -36,9 +36,12 @@ public class Guide {
 	@Column @NotNull
 	private String name;
 	@Column @Nullable
-	private String strengths;
+	@OneToMany(mappedBy = "guide", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Strength> strengths;
 	@Column @Nullable
-	private String Weaknesses;
+	@OneToMany(mappedBy = "guide", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Weakness> weaknesses;
+	@Column @Nullable
 	@OneToMany(mappedBy = "guide", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Combo> combos;
 }
