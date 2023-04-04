@@ -2,6 +2,7 @@ package br.com.apifgc.model;
 
 import java.util.List;
 
+import br.com.apifgc.dto.guide.GuideRegistrationData;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -27,7 +29,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Guide {
-	
+
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToOne
@@ -35,6 +37,8 @@ public class Guide {
 	private Fighter fighter;
 	@Column @NotNull
 	private String name;
+	@Column @NotNull
+	private String description;
 	@Column @Nullable
 	private List<String> strengths;
 	@Column @Nullable
@@ -42,4 +46,16 @@ public class Guide {
 	@Column @Nullable
 	@OneToMany(mappedBy = "guide", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Combo> combos;
+	
+	public Guide(@Valid GuideRegistrationData data, Fighter fighter) {
+		this.fighter = fighter;
+		this.name = data.name();
+		this.description = data.description();
+		if (data.strengths() != null) {
+			this.strengths = data.strengths();
+		}
+		if (data.weaknesses() != null) {
+			this.weaknesses = data.weaknesses();
+		}
+	}
 }

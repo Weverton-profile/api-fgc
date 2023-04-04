@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.apifgc.dto.game.GameData;
-import br.com.apifgc.dto.game.GameRegistrationAllData;
+import br.com.apifgc.dto.game.GameAllData;
 import br.com.apifgc.dto.game.GameRegistrationData;
 import br.com.apifgc.dto.game.GameUpdateData;
 import br.com.apifgc.model.Game;
@@ -33,9 +33,9 @@ public class GameController {
 	private GameRepository gameRepository;
 	
 	@GetMapping("show/{id}")
-	public ResponseEntity<GameRegistrationAllData> detail(@PathVariable Long id) {
+	public ResponseEntity<GameAllData> detail(@PathVariable Long id) {
 		Game game = gameRepository.getReferenceById(id);
-		return ResponseEntity.ok(new GameRegistrationAllData(game));
+		return ResponseEntity.ok(new GameAllData(game));
 	}
 	
 	@GetMapping("list")

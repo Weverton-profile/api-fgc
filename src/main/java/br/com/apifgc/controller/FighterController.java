@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.apifgc.dto.fighter.FighterRegistrationAllData;
+import br.com.apifgc.dto.fighter.FighterAllData;
 import br.com.apifgc.dto.fighter.FighterRegistrationData;
 import br.com.apifgc.dto.fighter.FighterUpdateData;
 import br.com.apifgc.model.Fighter;
@@ -36,9 +36,9 @@ public class FighterController {
 	private GameRepository gameRepository;
 	
 	@GetMapping("show/{id}")
-	public ResponseEntity<FighterRegistrationAllData> detail(@PathVariable Long id) {
+	public ResponseEntity<FighterAllData> detail(@PathVariable Long id) {
 		Fighter fighter = fighterRepository.getReferenceById(id);
-		return ResponseEntity.ok(new FighterRegistrationAllData(fighter));
+		return ResponseEntity.ok(new FighterAllData(fighter));
 	}
 	
 	@GetMapping("list")
