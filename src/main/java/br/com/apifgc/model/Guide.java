@@ -2,7 +2,9 @@ package br.com.apifgc.model;
 
 import java.util.List;
 
+import br.com.apifgc.dto.combo.ComboData;
 import br.com.apifgc.dto.guide.GuideRegistrationData;
+import br.com.apifgc.dto.guide.GuideUpdateData;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -56,6 +58,26 @@ public class Guide {
 		}
 		if (data.weaknesses() != null) {
 			this.weaknesses = data.weaknesses();
+		}
+	}
+
+	public void updateData(@Valid GuideUpdateData data) {
+		if (data.name() != null) {
+			this.name = data.name();
+		}
+		if (data.description() != null) {
+			this.description = data.description();
+		}
+		if (data.strengths() != null) {
+			this.strengths = data.strengths();
+		}
+		if (data.weaknesses() != null) {
+			this.weaknesses = data.weaknesses();
+		}
+		if (data.combos() != null) {
+			for (ComboData comboData : data.combos()) {
+				this.combos.add(new Combo(comboData.combo(), comboData.url()));
+			}
 		}
 	}
 }

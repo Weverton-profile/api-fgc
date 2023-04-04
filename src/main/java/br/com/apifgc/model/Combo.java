@@ -41,4 +41,9 @@ public class Combo {
 			this.urlVideo = combos.url();
 		}
 	}
+
+	public Combo(String combo, String urlVideo) {
+		this.combo = combo;
+		this.urlVideo = urlVideo;
+	}
 }
