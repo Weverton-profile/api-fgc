@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.apifgc.dto.combo.ComboData;
+import br.com.apifgc.dto.combo.ComboRegistrationData;
 import br.com.apifgc.dto.combo.ComboUpdateData;
 import br.com.apifgc.dto.fighter.FighterAllData;
 import br.com.apifgc.dto.guide.GuideAllData;
@@ -51,10 +51,9 @@ public class GuideController {
 	public ResponseEntity<FighterAllData> register(@RequestBody @Valid GuideRegistrationData data, UriComponentsBuilder uriBuilder) {
 		Fighter fighter = fighterRepository.getReferenceById(data.fighter_id());
 		Guide guide = new Guide(data, fighter);
-		System.out.println(data.combos());
 		guideRepository.save(guide);
 		
-		for (ComboData combos : data.combos()) {
+		for (ComboRegistrationData combos : data.combos()) {
 			Combo combo = new Combo(combos, guide);
 			comboRepository.save(combo);
 		}
