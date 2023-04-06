@@ -2,7 +2,6 @@ package br.com.apifgc.model;
 
 import java.util.List;
 
-import br.com.apifgc.dto.combo.ComboData;
 import br.com.apifgc.dto.guide.GuideRegistrationData;
 import br.com.apifgc.dto.guide.GuideUpdateData;
 import jakarta.annotation.Nullable;
@@ -73,11 +72,6 @@ public class Guide {
 		}
 		if (data.weaknesses() != null) {
 			this.weaknesses = data.weaknesses();
-		}
-		if (data.combos() != null) {
-			for (ComboData comboData : data.combos()) {
-				this.combos.add(new Combo(comboData.combo(), comboData.url()));
-			}
 		}
 	}
 }

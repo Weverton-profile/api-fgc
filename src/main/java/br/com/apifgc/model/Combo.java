@@ -1,6 +1,7 @@
 package br.com.apifgc.model;
 
 import br.com.apifgc.dto.combo.ComboData;
+import br.com.apifgc.dto.combo.ComboUpdateData;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,5 +46,14 @@ public class Combo {
 	public Combo(String combo, String urlVideo) {
 		this.combo = combo;
 		this.urlVideo = urlVideo;
+	}
+
+	public void updateData(ComboUpdateData combos) {
+		if (combos.combo() != null) {
+			this.combo = combos.combo();
+		}
+		if (combos.urlVideo() != null) {
+			this.urlVideo = combos.urlVideo();
+		}
 	}
 }

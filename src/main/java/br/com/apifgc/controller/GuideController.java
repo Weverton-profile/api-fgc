@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.apifgc.dto.combo.ComboData;
+import br.com.apifgc.dto.combo.ComboUpdateData;
 import br.com.apifgc.dto.fighter.FighterAllData;
 import br.com.apifgc.dto.guide.GuideAllData;
 import br.com.apifgc.dto.guide.GuideRegistrationData;
@@ -56,7 +57,6 @@ public class GuideController {
 		for (ComboData combos : data.combos()) {
 			Combo combo = new Combo(combos, guide);
 			comboRepository.save(combo);
-			System.out.println(combo.getCombo());
 		}
 		
 		URI uri = uriBuilder.path("/fighter/show/{id}").buildAndExpand(guide.getId()).toUri();
@@ -67,6 +67,10 @@ public class GuideController {
 	@Transactional
 	public ResponseEntity<GuideAllData> update(@RequestBody @Valid GuideUpdateData data) {
 		Guide guide = guideRepository.getReferenceById(data.id());
+		for (ComboUpdateData combos : data.combos()) {
+			Combo combo = comboRepository.getReferenceById(combos.id());
+			combo.updateData(combos);
+		}
 		guide.updateData(data);
 		return ResponseEntity.ok(new GuideAllData(guide));
 	}
@@ -75,6 +79,13 @@ public class GuideController {
 	@Transactional
 	public ResponseEntity<Object> delete(@PathVariable Long id) {
 		guideRepository.deleteById(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@DeleteMapping("combo/delete/{id}")
+	@Transactional
+	public ResponseEntity<Object> deleteCombo(@PathVariable Long id) {
+		comboRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 }

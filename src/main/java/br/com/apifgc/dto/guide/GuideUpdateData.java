@@ -2,7 +2,7 @@ package br.com.apifgc.dto.guide;
 
 import java.util.List;
 
-import br.com.apifgc.dto.combo.ComboData;
+import br.com.apifgc.dto.combo.ComboUpdateData;
 import jakarta.validation.constraints.NotNull;
 
 public record GuideUpdateData(
@@ -12,6 +12,6 @@ public record GuideUpdateData(
 		String description,
 		List<String> strengths,
 		List<String> weaknesses,
-		List<ComboData> combos
+		List<ComboUpdateData> combos
 		) {
 }
