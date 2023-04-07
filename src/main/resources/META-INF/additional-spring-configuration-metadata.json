@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "api.secret.token.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'api.secret.token.secret'"
+  },
+  {
+    "name": "apifgc.secret.token.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'apifgc.secret.token.secret'"
+  },
+  {
+    "name": "apifgc.secret.token.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'apifgc.secret.token.secret'"
+  }
+]}
