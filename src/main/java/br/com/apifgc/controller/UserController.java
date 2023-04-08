@@ -73,8 +73,21 @@ public class UserController {
 	@DeleteMapping("delete/{id}")
 	@Transactional
 	public ResponseEntity<Object> delete(@PathVariable Long id) {
+		User user = userRepository.getReferenceById(id);
+		
+		if (user.getRole().equals("ROLE_ADMIN")
+				|| user.getRole().equals("ROLE_OWNER")) {
+			return ResponseEntity.status(HttpStatusCode.valueOf(422)).build();
+		}
 		userRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@DeleteMapping("delete/admin/{id}")
+	@Transactional
+	public ResponseEntity<Object> deleteAdmin(@PathVariable Long id) {
+		User user = userRepository.getReferenceById(id);
+		userRepository.deleteById(id);
+		return ResponseEntity.noContent().build();
+	}
 }
