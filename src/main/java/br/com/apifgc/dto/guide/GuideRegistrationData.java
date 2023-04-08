@@ -3,18 +3,19 @@ package br.com.apifgc.dto.guide;
 import java.util.List;
 
 import br.com.apifgc.dto.combo.ComboRegistrationData;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record GuideRegistrationData(
-		@NotNull
+		@NotNull @NotBlank
 		Long fighter_id,
-		@NotNull
+		@NotNull @NotBlank
 		String name,
-		@NotNull
+		@NotNull @NotBlank
 		String description,
 		List<String> strengths,
 		List<String> weaknesses,
-		@NotNull
+		@NotNull @NotBlank
 		List<ComboRegistrationData> combos
 		) {
 
