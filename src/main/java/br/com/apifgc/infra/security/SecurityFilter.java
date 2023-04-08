@@ -33,7 +33,6 @@ public class SecurityFilter extends OncePerRequestFilter  {
 			
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			System.out.println(tokenJWT);
 		}
 		filterChain.doFilter(request, response);
 	}

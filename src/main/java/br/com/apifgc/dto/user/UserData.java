@@ -5,11 +5,12 @@ import br.com.apifgc.model.User;
 public record UserData(
 		Long id,
 		String email,
-		String name
+		String name,
+		String role
 		) {
 
 	public UserData(User user) {
-		this(user.getId(), user.getEmail(), user.getName());
+		this(user.getId(), user.getEmail(), user.getName(), user.getRole());
 	}
 
 }

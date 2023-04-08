@@ -11,6 +11,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 
+import br.com.apifgc.model.Admin;
+import br.com.apifgc.model.Owner;
 import br.com.apifgc.model.User;
 
 @Service
@@ -20,6 +22,11 @@ public class TokenService {
 	private String secret;
 	
 	public String createToken(User user) {
+		if (user.getRole().equals("ROLE_ADMIN")) {
+			user = new Admin(user.getId(), user.getName(), user.getEmail(), user.getRole());
+		} else if (user.getRole().equals("ROLE_OWNER")) {
+			user = new Owner(user.getId(), user.getName(), user.getEmail(), user.getRole());
+		}
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
 			return JWT.create()

@@ -62,6 +62,14 @@ public class UserController {
 		return ResponseEntity.ok(new UserData(user));
 	}
 	
+	@PutMapping("change-role/{id}")
+	@Transactional
+	public ResponseEntity<UserData> updateRole(@PathVariable Long id) {
+		User user = userRepository.getReferenceById(id);
+		user.updateRole();
+		return ResponseEntity.ok(new UserData(user));
+	}
+	
 	@DeleteMapping("delete/{id}")
 	@Transactional
 	public ResponseEntity<Object> delete(@PathVariable Long id) {

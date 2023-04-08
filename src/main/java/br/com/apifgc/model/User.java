@@ -10,19 +10,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import br.com.apifgc.dto.user.UserRegistration;
 import br.com.apifgc.dto.user.UserUpdateData;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Table
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -37,6 +41,9 @@ public class User implements UserDetails {
 	private String name;
 	private String email;
 	private String password;
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<Guide> guides;
+	private String role;
 	
 	@Override
 	public List<SimpleGrantedAuthority> getAuthorities() {
@@ -73,6 +80,7 @@ public class User implements UserDetails {
 		this.name = data.name();
 		this.email = data.email();
 		this.password = passwordEncoder().encode(data.password());
+		this.role = "ROLE_USER";
 	}
 	
 	private BCryptPasswordEncoder passwordEncoder() {
@@ -88,5 +96,8 @@ public class User implements UserDetails {
 		if (data.password() != null) {
 			this.password = passwordEncoder().encode(data.password());
 		}
+	}
+	public void updateRole() {
+		this.role = "ROLE_ADMIN";
 	}
 }
