@@ -27,15 +27,28 @@ public class TokenService {
 					.withSubject(user.getEmail())
 					.withClaim("id", user.getId())
 					.withClaim("name", user.getName())
+					.withClaim("role", user.getAuthorities().get(0).getAuthority())
 					.withExpiresAt(expirationDate())
 					.sign(algorithm);
 		} catch (JWTCreationException e) {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public String getSubject(String tokenJWT) {
+		try {
+			Algorithm algorithm = Algorithm.HMAC256(secret);
+			return JWT.require(algorithm)
+					.withIssuer("API FGC")
+					.build()
+					.verify(tokenJWT).getSubject();
+		} catch (JWTCreationException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	private Instant expirationDate() {
-		return LocalDateTime.now().plusHours(6).toInstant(ZoneOffset.UTC);
+		return LocalDateTime.now().plusHours(8).toInstant(ZoneOffset.of("-03:00"));
 	}
 	
 }

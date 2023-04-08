@@ -1,9 +1,8 @@
 package br.com.apifgc.model;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -36,8 +35,10 @@ public class User implements UserDetails {
 	private String password;
 	
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+	public List<SimpleGrantedAuthority> getAuthorities() {
+		List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+		simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		return simpleGrantedAuthorities;
 	}
 	@Override
 	public String getPassword() {
