@@ -1,14 +1,16 @@
 package br.com.apifgc.model;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.apifgc.dto.user.UserRegistration;
 import br.com.apifgc.dto.user.UserUpdateData;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +32,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class User implements UserDetails {
+public class User implements UserDetails  {
 	
 	/**
 	 * 
@@ -41,15 +43,13 @@ public class User implements UserDetails {
 	private String name;
 	private String email;
 	private String password;
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
 	private List<Guide> guides;
 	private String role;
 	
 	@Override
-	public List<SimpleGrantedAuthority> getAuthorities() {
-		List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
-		simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		return simpleGrantedAuthorities;
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority(role));
 	}
 	@Override
 	public String getPassword() {
@@ -76,11 +76,11 @@ public class User implements UserDetails {
 		return true;
 	}
 	
-	public User(@Valid UserRegistration data) {
+	public User(@Valid UserRegistration data, String role) {
 		this.name = data.name();
 		this.email = data.email();
 		this.password = passwordEncoder().encode(data.password());
-		this.role = "ROLE_USER";
+		this.role = role;
 	}
 	
 	private BCryptPasswordEncoder passwordEncoder() {
@@ -100,4 +100,5 @@ public class User implements UserDetails {
 	public void updateRole() {
 		this.role = "ROLE_ADMIN";
 	}
+
 }

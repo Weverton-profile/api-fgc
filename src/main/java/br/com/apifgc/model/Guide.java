@@ -36,6 +36,7 @@ public class Guide {
 	@ManyToOne
 	@JoinColumn(name = "fighter_id", nullable = false)
 	private Fighter fighter;
+	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 	@Column @NotNull
@@ -50,8 +51,9 @@ public class Guide {
 	@OneToMany(mappedBy = "guide", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Combo> combos;
 	
-	public Guide(@Valid GuideRegistrationData data, Fighter fighter) {
+	public Guide(@Valid GuideRegistrationData data, Fighter fighter, User user) {
 		this.fighter = fighter;
+		this.user = user;
 		this.name = data.name();
 		this.description = data.description();
 		if (data.strengths() != null) {

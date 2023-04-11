@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class GameController {
 		return ResponseEntity.ok(page);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
 	@PostMapping("new")
 	@Transactional
 	public ResponseEntity<GameRegistrationData> register(@RequestBody @Valid GameRegistrationData data, UriComponentsBuilder uriBuilder) {
@@ -54,6 +56,7 @@ public class GameController {
 		return ResponseEntity.created(uri).body(new GameRegistrationData(game));
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
 	@PutMapping("change")
 	@Transactional
 	public ResponseEntity<GameRegistrationData> update(@RequestBody @Valid GameUpdateData data) {
@@ -62,6 +65,7 @@ public class GameController {
 		return ResponseEntity.ok(new GameRegistrationData(game));
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
 	@DeleteMapping("delete/{id}")
 	@Transactional
 	public ResponseEntity<Object> delete(@PathVariable Long id) {

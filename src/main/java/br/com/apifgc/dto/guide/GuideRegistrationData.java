@@ -7,15 +7,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record GuideRegistrationData(
-		@NotNull @NotBlank
+		@NotNull
 		Long fighter_id,
+		@NotNull
+		Long user_id,
 		@NotNull @NotBlank
 		String name,
 		@NotNull @NotBlank
 		String description,
 		List<String> strengths,
 		List<String> weaknesses,
-		@NotNull @NotBlank
+		@NotNull
 		List<ComboRegistrationData> combos
 		) {
 

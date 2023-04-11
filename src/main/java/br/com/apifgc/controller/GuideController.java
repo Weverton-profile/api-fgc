@@ -23,9 +23,11 @@ import br.com.apifgc.dto.guide.GuideUpdateData;
 import br.com.apifgc.model.Combo;
 import br.com.apifgc.model.Fighter;
 import br.com.apifgc.model.Guide;
+import br.com.apifgc.model.User;
 import br.com.apifgc.repository.ComboRepository;
 import br.com.apifgc.repository.FighterRepository;
 import br.com.apifgc.repository.GuideRepository;
+import br.com.apifgc.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -39,6 +41,8 @@ public class GuideController {
 	private FighterRepository fighterRepository;
 	@Autowired
 	private ComboRepository comboRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	@GetMapping("show/{id}")
 	public ResponseEntity<GuideAllData> detail(@PathVariable Long id) {
@@ -50,7 +54,8 @@ public class GuideController {
 	@Transactional
 	public ResponseEntity<FighterAllData> register(@RequestBody @Valid GuideRegistrationData data, UriComponentsBuilder uriBuilder) {
 		Fighter fighter = fighterRepository.getReferenceById(data.fighter_id());
-		Guide guide = new Guide(data, fighter);
+		User user = userRepository.getReferenceById(data.user_id());
+		Guide guide = new Guide(data, fighter, user);
 		guideRepository.save(guide);
 		
 		for (ComboRegistrationData combos : data.combos()) {
@@ -84,7 +89,7 @@ public class GuideController {
 	@DeleteMapping("combo/delete/{id}")
 	@Transactional
 	public ResponseEntity<Object> deleteCombo(@PathVariable Long id) {
-		comboRepository.deleteById(id);
+		guideRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 }

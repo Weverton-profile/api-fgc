@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.apifgc.dto.user.UserAllData;
 import br.com.apifgc.dto.user.UserData;
 import br.com.apifgc.dto.user.UserRegistration;
 import br.com.apifgc.dto.user.UserUpdateData;
@@ -32,9 +34,9 @@ public class UserController {
 	private UserRepository userRepository;
 	
 	@GetMapping("show/{id}")
-	public ResponseEntity<UserData> detail(@PathVariable Long id) {
+	public ResponseEntity<UserAllData> detail(@PathVariable Long id) {
 		User user = userRepository.getReferenceById(id);
-		return ResponseEntity.ok().body(new UserData(user));
+		return ResponseEntity.ok().body(new UserAllData(user));
 	}
 	
 	@PostMapping("create")
@@ -44,12 +46,13 @@ public class UserController {
 		if (userDetails != null) {
 			return ResponseEntity.status(HttpStatusCode.valueOf(422)).build();
 		}
-		User user = new User(data);
+		User user = new User(data, "ROLE_USER");
 		userRepository.save(user);
 		URI uri = uriBuilder.path("/user/show/{id}").buildAndExpand(user.getId()).toUri();
 		return ResponseEntity.created(uri).body(new UserData(user));
 	}
 	
+	@PreAuthorize("principal.id == #data.id()")
 	@PutMapping("change")
 	@Transactional
 	public ResponseEntity<UserData> update(@RequestBody @Valid UserUpdateData data) {
@@ -62,6 +65,7 @@ public class UserController {
 		return ResponseEntity.ok(new UserData(user));
 	}
 	
+	@PreAuthorize("hasRole('OWNER')")
 	@PutMapping("change-role/{id}")
 	@Transactional
 	public ResponseEntity<UserData> updateRole(@PathVariable Long id) {
@@ -70,23 +74,24 @@ public class UserController {
 		return ResponseEntity.ok(new UserData(user));
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN', 'OWNER') or principal.id == #id")
 	@DeleteMapping("delete/{id}")
 	@Transactional
 	public ResponseEntity<Object> delete(@PathVariable Long id) {
 		User user = userRepository.getReferenceById(id);
 		
-		if (user.getRole().equals("ROLE_ADMIN")
-				|| user.getRole().equals("ROLE_OWNER")) {
+		if ((user.getRole().equals("ROLE_ADMIN")
+				|| user.getRole().equals("ROLE_OWNER")) && user.getId() != id) {
 			return ResponseEntity.status(HttpStatusCode.valueOf(422)).build();
 		}
 		userRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@PreAuthorize("hasRole('OWNER') or principal.id == #id")
 	@DeleteMapping("delete/admin/{id}")
 	@Transactional
 	public ResponseEntity<Object> deleteAdmin(@PathVariable Long id) {
-		User user = userRepository.getReferenceById(id);
 		userRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}

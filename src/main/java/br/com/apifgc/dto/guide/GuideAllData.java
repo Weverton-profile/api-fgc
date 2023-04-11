@@ -10,6 +10,7 @@ import br.com.apifgc.model.Guide;
 public record GuideAllData(
 
 		Long id,
+		String userName,
 		String fighter,
 		String name,
 		String description,
@@ -19,7 +20,7 @@ public record GuideAllData(
 		) {
 
 	public GuideAllData(Guide guide) {
-		this(guide.getId(), guide.getFighter().getName(), guide.getName(), 
+		this(guide.getId(), guide.getUser().getName(), guide.getFighter().getName(), guide.getName(), 
 				guide.getDescription(), guide.getStrengths(), guide.getWeaknesses(), combosForComboData(guide.getCombos()));
 	}
 

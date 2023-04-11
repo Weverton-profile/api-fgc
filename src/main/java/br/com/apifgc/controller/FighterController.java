@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,7 @@ public class FighterController {
 		return ResponseEntity.ok(page);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
 	@PostMapping("new")
 	@Transactional
 	public ResponseEntity<FighterRegistrationData> register(@RequestBody @Valid FighterRegistrationData data, UriComponentsBuilder uriBuilder) {
@@ -58,6 +60,7 @@ public class FighterController {
 		return ResponseEntity.created(uri).body(new FighterRegistrationData(fighter));
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
 	@PutMapping("change")
 	@Transactional
 	public ResponseEntity<FighterRegistrationData> update(@RequestBody @Valid FighterUpdateData data) {
@@ -67,6 +70,7 @@ public class FighterController {
 		return ResponseEntity.ok(new FighterRegistrationData(fighter));
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN', 'OWNER')")
 	@DeleteMapping("delete/{id}")
 	@Transactional
 	public ResponseEntity<Object> delete(@PathVariable Long id) {

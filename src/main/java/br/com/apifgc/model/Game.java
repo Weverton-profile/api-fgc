@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.com.apifgc.dto.game.GameRegistrationData;
 import br.com.apifgc.dto.game.GameUpdateData;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,7 +35,7 @@ public class Game {
 	private String name;
 	@Column @NotNull
 	private String urlImage;
-	@OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "game", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Fighter> fighters;
 	
 	public Game(GameRegistrationData data) {
