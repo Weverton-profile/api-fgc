@@ -83,8 +83,8 @@ public class GuideController {
 		return ResponseEntity.ok(new GuideAllData(guide));
 	}
 	
-	@PreAuthorize("principal.id == #data.id_user()")
-	@DeleteMapping("delete/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN', 'OWNER') or principal.id == #data.id_user()")
+	@DeleteMapping("delete")
 	@Transactional
 	public ResponseEntity<Object> delete(@PathVariable GuideDelete data) {
 		guideRepository.deleteById(data.id_guide());
@@ -92,7 +92,7 @@ public class GuideController {
 	}
 	
 	@PreAuthorize("principal.id == #data.id_user()")
-	@DeleteMapping("combo/delete/{id}")
+	@DeleteMapping("combo/delete")
 	@Transactional
 	public ResponseEntity<Object> deleteCombo(@RequestBody @Valid ComboDelete data) {
 		guideRepository.deleteById(data.id_combo());
