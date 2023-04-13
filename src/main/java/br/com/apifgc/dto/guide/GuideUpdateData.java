@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record GuideUpdateData(
 		@NotNull
+		Long id_user,
+		@NotNull
 		Long id,
 		@NotBlank
 		String name,
